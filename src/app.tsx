@@ -11,6 +11,7 @@ import {
   h,
   Fragment,
   useState,
+  setState
 } from './deps/nano.ts';
 
 const startAt = new Date();
@@ -47,7 +48,7 @@ export default function Home() {
 function TimerComponent({ timers }: { timers: Timer[] }) {
   const [now, setNow] = useState(new Date(), 'now');
   setTimeout(() => {
-      setNow(new Date());
+      //setNow(new Date());
     }, 1000);
   let from: Date | undefined;
   return (

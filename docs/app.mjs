@@ -132,6 +132,11 @@ const documentSSR = ()=>{
 const isSSR = ()=>typeof _nano !== 'undefined' && _nano.isSSR === true
 ;
 const tick = typeof Promise == 'function' ? Promise.prototype.then.bind(Promise.resolve()) : setTimeout;
+const removeAllChildNodes = (parent)=>{
+    while(parent.firstChild){
+        parent.removeChild(parent.firstChild);
+    }
+};
 const strToHash = (s)=>{
     let hash = 0;
     for(let i = 0; i < s.length; i++){
@@ -173,6 +178,31 @@ const SVG = (props)=>{
     }
     svg.innerHTML = child.innerHTML;
     return svg;
+};
+const render = (component, parent = null, removeChildNodes = true)=>{
+    let el = _render(component);
+    if (Array.isArray(el)) {
+        el = el.map((e)=>_render(e)
+        );
+        if (el.length === 1) el = el[0];
+    }
+    if (parent) {
+        if (removeChildNodes) removeAllChildNodes(parent);
+        if (el && parent.id && parent.id === el.id && parent.parentElement) {
+            parent.parentElement.replaceChild(el, parent);
+        } else {
+            if (Array.isArray(el)) el.forEach((e)=>{
+                appendChildren(parent, _render(e));
+            });
+            else appendChildren(parent, _render(el));
+        }
+        return parent;
+    } else {
+        if (isSSR() && !Array.isArray(el)) return [
+            el
+        ];
+        return el;
+    }
 };
 const _render = (comp)=>{
     if (typeof comp === 'undefined') return [];
@@ -539,5 +569,5 @@ function TimerComponent({ timers  }) {
         return h(Fragment, null, showNow, h("p", null, at, " ", text));
     }));
 }
-export { Home as default };
+render(Home, document.getElementById('app'));
 

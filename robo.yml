@@ -1,0 +1,4 @@
+bundle:
+  command: deno bundle src/load.ts > docs/app.mjs
+serve:
+  command: deno run --allow-net --allow-read https://deno.land/std@0.125.0/http/file_server.ts docs

@@ -4,13 +4,14 @@
 /// <reference lib="dom.asynciterable" />
 /// <reference lib="deno.ns" />
 /// <reference lib="deno.unstable" />
+/** @jsxFrag Fragment */
+/** @jsx h */
 
-import { React } from "lume/deps/react.ts";
-const {
+import {
+  h,
   Fragment,
-  useEffect,
   useState,
-} = React;
+} from './deps/nano.ts';
 
 const startAt = new Date();
 type Timer = {
@@ -23,20 +24,20 @@ function parse(str: string): Timer[] {
   return [{at: startAt, text: "Started"},{at: new Date(startAt.getTime()+30000), text: "Ended"}];
 }
 export default function Home() {
-  const [text, setText] = useState("");
-  const [timers, setTimers] = useState<Timer[]>([]);
-  const handleChange: React.ChangeEventHandler<HTMLTextAreaElement> = (e) => {
-    const target = e.target
+  const [text, setText] = useState("", 'text');
+  const [timers, setTimers] = useState<Timer[]>([], 'timer');
+  const handleChange = (e: Event) => {
+    const target = e.target! as HTMLTextAreaElement;
     setText(target.value);
     setTimers(parse(target.value));
   };
   return (
     <>
       <title>Event Keeper</title>
-      <div className="input">
+      <div class="input">
         <textarea value={text} onChange={handleChange}></textarea>
       </div>
-      <div className="timer">
+      <div class="timer">
         <TimerComponent timers={timers} />
       </div>
     </>
@@ -44,15 +45,10 @@ export default function Home() {
 }
 
 function TimerComponent({ timers }: { timers: Timer[] }) {
-  const [now, setNow] = useState(new Date());
-  useEffect(() => {
-    const timer = setInterval(() => {
+  const [now, setNow] = useState(new Date(), 'now');
+  setTimeout(() => {
       setNow(new Date());
     }, 1000);
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
   let from: Date | undefined;
   return (
     <>

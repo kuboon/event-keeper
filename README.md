@@ -13,3 +13,6 @@ After adding, removing, or moving a page in the `pages` directory, run:
 ```
 fresh routes
 ```
+```
+go install github.com/tj/robo@latest
+```

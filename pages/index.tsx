@@ -13,6 +13,11 @@ type Timer = {
   at: Date;
   text: string;
 };
+function hourMin(time: Date){
+  const hour = time.getHours()
+  const min = time.getMinutes()
+  return `${hour}:${min}`
+}
 function parse(str: string): Timer[] {
   const lines = str.split("\n");
 
@@ -26,6 +31,7 @@ export default function Home() {
     setText(target.value);
     setTimers(parse(target.value));
   };
+  setTimers(parse(text))
   return (
     <>
       <title>Event Keeper</title>
@@ -54,13 +60,13 @@ function TimerComponent({ timers }: { timers: Timer[] }) {
     <>
       {timers.map(({ at, text }) => {
         const showNow = from && from < now && now < at
-          ? <p class="now">{now}</p>
+          ? <p class="now">{hourMin(now)}</p>
           : "";
         from = at;
         return (
           <>
             {showNow}
-            <p>{at} {text}</p>
+            <p>{hourMin(at)} {text}</p>
           </>
         );
       })}

@@ -1,18 +1,5 @@
 # fresh project
 
-### Usage
-
-Start the project:
-
 ```
-deno run -A --watch --no-check main.ts
-```
-
-After adding, removing, or moving a page in the `pages` directory, run:
-
-```
-fresh routes
-```
-```
-go install github.com/tj/robo@latest
+deno install -qAn vr https://deno.land/x/velociraptor@1.4.0/cli.ts
 ```

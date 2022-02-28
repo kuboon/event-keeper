@@ -92,10 +92,10 @@ export default function Home() {
         <textarea value={text} onChange={handleChange}></textarea>
       </div>
 
+      <a class="button" href="#slideout" data-slideout-toggle>&gt;</a>
       <div class="boxes">
         <div class="box clock">
           <Clock />
-          <a href="#slideout" data-slideout-toggle>settings</a>
         </div>
         <div class="box timers">
           <TimerComponent timers={timers} />
@@ -116,9 +116,9 @@ function Clock() {
     };
   }, []);
   return (
-    <>
+    <p id='now'>
       {hourMin(now, true)}
-    </>
+    </p>
   );
 }
 function TimerComponent({ timers }: { timers: Timer[] }) {

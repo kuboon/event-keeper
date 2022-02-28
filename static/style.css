@@ -1,14 +1,16 @@
 /* https://github.com/zetareticoli/cssui */
 :root {
   --cssui-animation-rotate: rotate(-180deg);
-  --cssui-animation-timing: .25s;
-  --cssui-font-family     : -apple-system, blinkmacsystemfont, "Segoe UI", roboto, "Helvetica Neue", arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --cssui-gray-lighter    : #e5e7eb;
-  --cssui-gray-light      : #d1d5db;
-  --cssui-gray-dark       : #4b5563;
-  --cssui-gray-darkest    : #1f2937;
-  --cssui-padding         : 1rem;
-  --cssui-radius          : 4px;
+  --cssui-animation-timing: 0.25s;
+  --cssui-font-family: -apple-system, blinkmacsystemfont, "Segoe UI", roboto,
+    "Helvetica Neue", arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --cssui-gray-lighter: #e5e7eb;
+  --cssui-gray-light: #d1d5db;
+  --cssui-gray-dark: #4b5563;
+  --cssui-gray-darkest: #1f2937;
+  --cssui-padding: 1rem;
+  --cssui-radius: 4px;
 }
 
 * {
@@ -17,7 +19,7 @@
 
 body {
   font-family: var(--cssui-font-family);
-  font-size  : 3vmin;
+  font-size: 3vmin;
 }
 
 /* ------------------------------
@@ -28,35 +30,34 @@ Changing the sliding in animation
 /* Edit the '--slideout-animation' and '--slideout-position' variables to change the position */
 
 [data-slideout-panel] {
-  --slideout-animation   : left .2s ease-in-out;
-  --slideout-background  : #fff;
+  --slideout-animation: left 0.2s ease-in-out;
+  --slideout-background: #fff;
   --slideout-shadow-color: #9ca3af;
-  --slideout-padding     : 1rem;
-  --slideout-position    : -100%;
-  --slideout-size        : 33vw;
-  position               : fixed;
-  top                    : 0;
-  bottom                 : 0;
-  left                   : var(--slideout-position);
-  z-index                : 9999;
+  --slideout-padding: 1rem;
+  --slideout-position: -100%;
+  --slideout-size: 33vw;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: var(--slideout-position);
+  z-index: 9999;
   /* right               : 0;  */
-  visibility             : hidden;
-  width                  : var(--slideout-size);
-  padding                : var(--slideout-padding);
-  background             : var(--slideout-background);
-  box-shadow             : 0 4px 20px var(--slideout-shadow-color);
-  transition             : var(--slideout-animation);
+  visibility: hidden;
+  width: var(--slideout-size);
+  padding: var(--slideout-padding);
+  background: var(--slideout-background);
+  box-shadow: 0 4px 20px var(--slideout-shadow-color);
+  transition: var(--slideout-animation);
 }
-
 
 [data-slideout-panel]:target {
   --slideout-position: 0;
-  visibility         : visible;
+  visibility: visible;
 }
 
 [data-slideout-header] {
-  display        : flex;
-  align-items    : center;
+  display: flex;
+  align-items: center;
   justify-content: space-between;
 }
 
@@ -64,32 +65,40 @@ Changing the sliding in animation
   color: var(--cssui-gray-darkest);
 }
 
+textarea {
+  height: 90%;
+  width: 100%;
+}
 
-.input textarea {
-  height: 20rem;
+.button {
+  display: block;
+  border: double gray;
+  border-width: 5px 5px 5px 0;
+  padding: 0.1rem;
+  width: 3rem;
+  text-decoration: none !important;
+}
+
+#now {
+  font-size: 10vmin;
 }
 
 .boxes {
-  display      : flex;
-  flex-wrap    : wrap;
-  align-items  : stretch;
-  align-content: stretch;
+  width: 100%;
+}
+.boxes > * {
+  flex: 1 0 40%;
 }
 
 .box {
-  border : dotted 5px gray;
-  margin : 2rem;
-  padding: 3rem;
+  border: double 5px gray;
+  margin: 1rem;
+  padding: 1rem;
 }
 
 @media all and (orientation: landscape) {
-  .box {}
-
   .boxes {
     display: flex;
+    flex-wrap: wrap;
   }
-}
-
-@media all and (orientation: portrait) {
-  .box {}
 }

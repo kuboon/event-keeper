@@ -3,72 +3,129 @@
 import {
   Fragment,
   h,
+  Head,
   PageConfig,
+  Temporal,
   useEffect,
   useState,
 } from "../deps.ts";
 
-const startAt = new Date();
 type Timer = {
-  at: Date;
+  at: Temporal.PlainTime;
   text: string;
 };
-function hourMin(time: Date){
-  const hour = time.getHours()
-  const min = time.getMinutes()
-  return `${hour}:${min}`
+function hourMin(time: Temporal.PlainTime, showSec = false) {
+  const hour = time.hour.toString().padStart(2, "0");
+  const min = time.minute.toString().padStart(2, "0");
+  const sec = time.second.toString().padStart(2, "0");
+  return showSec ? `${hour}:${min}:${sec}` : `${hour}:${min}`;
 }
 function parse(str: string): Timer[] {
-  const lines = str.split("\n");
+  let absolute = true;
+  const ret: Timer[] = [];
+  let time = Temporal.Now.plainTimeISO();
+  for (const line of str.split("\n")) {
+    if (line === "") {
+      absolute = true;
+      continue;
+    }
+    const [time_, text] = line.split(" ");
+    if (absolute) {
+      absolute = false;
+      time = Temporal.PlainTime.from(time_);
+    } else {
+      const [hours, minutes] = time_.split(":").map((x) => parseInt(x));
+      const duration = Temporal.Duration.from({ hours, minutes });
+      time = time.add(duration);
+    }
+    ret.push({ at: time, text });
+  }
 
-  return [{at: startAt, text: "Started"},{at: new Date(startAt.getTime()+30000), text: "Ended"}];
+  return ret;
 }
+const startAt = Temporal.Now.plainTimeISO();
+const time2 = startAt.add({ minutes: 5 });
+const defaultText = `${hourMin(startAt)} 開始
+0:01 １分後
+0:02 その2分後
+
+${hourMin(time2)} 空行のあとは時刻
+0:05 その5分後
+
+`;
 export default function Home() {
-  const [text, setText] = useState("");
-  const [timers, setTimers] = useState<Timer[]>([]);
+  const [text, setText] = useState(defaultText);
+  const [timers, setTimers] = useState<Timer[]>(parse(text));
   const handleChange = (e: Event) => {
     const target = e.target as HTMLTextAreaElement;
     setText(target.value);
     setTimers(parse(target.value));
   };
-  setTimers(parse(text))
   return (
     <>
-      <title>Event Keeper</title>
-      <div class="input">
+      <Head>
+        <title>Event Keeper</title>
+        <meta name="viewport" content="user-scalable=no"></meta>
+        <link href="/style.css" rel="stylesheet" />
+      </Head>
+      <div id="slideout" data-slideout-panel>
+        <div data-slideout-header>
+          <h3>setting</h3>
+          <a href="#" data-slideout-close>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="feather feather-x"
+            >
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </a>
+        </div>
         <textarea value={text} onChange={handleChange}></textarea>
       </div>
-      <div class="timer">
-        <TimerComponent timers={timers} />
+
+      <div class="boxes">
+        <div class="box clock">
+          <Clock />
+          <a href="#slideout" data-slideout-toggle>settings</a>
+        </div>
+        <div class="box timers">
+          <TimerComponent timers={timers} />
+        </div>
       </div>
     </>
   );
 }
 
-function TimerComponent({ timers }: { timers: Timer[] }) {
-  const [now, setNow] = useState(new Date());
+function Clock() {
+  const [now, setNow] = useState(Temporal.Now.plainTimeISO());
   useEffect(() => {
     const timer = setInterval(() => {
-      setNow(new Date());
+      setNow(Temporal.Now.plainTimeISO());
     }, 1000);
     return () => {
       clearInterval(timer);
     };
   }, []);
-  let from: Date | undefined;
+  return (
+    <>
+      {hourMin(now, true)}
+    </>
+  );
+}
+function TimerComponent({ timers }: { timers: Timer[] }) {
   return (
     <>
       {timers.map(({ at, text }) => {
-        const showNow = from && from < now && now < at
-          ? <p class="now">{hourMin(now)}</p>
-          : "";
-        from = at;
-        return (
-          <>
-            {showNow}
-            <p>{hourMin(at)} {text}</p>
-          </>
-        );
+        return <p>{hourMin(at)} {text}</p>;
       })}
     </>
   );

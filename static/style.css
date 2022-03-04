@@ -26,7 +26,7 @@ body {
 Changing the sliding in animation
 ------------------------------ */
 
-/* NOTES: 
+/* NOTES:
 /* Edit the '--slideout-animation' and '--slideout-position' variables to change the position */
 
 [data-slideout-panel] {
@@ -80,9 +80,11 @@ textarea {
 }
 
 #now {
-  font-size: 10vmin;
+  font-size: 10px;
 }
-
+.line {
+  background-color: pink;
+}
 .boxes {
   width: 100%;
 }

@@ -56,6 +56,7 @@ ${hourMin(time2)} 空行のあとは時刻
 export default function Home() {
   const [text, setText] = useState(defaultText);
   const [timers, setTimers] = useState<Timer[]>(parse(text));
+  const [showClock, setShowClock] = useState(true);
   const handleChange = (e: Event) => {
     const target = e.target as HTMLTextAreaElement;
     setText(target.value);
@@ -89,46 +90,66 @@ export default function Home() {
             </svg>
           </a>
         </div>
-        <textarea value={text} onChange={handleChange}></textarea>
+        <textarea
+          value={text}
+          onChange={handleChange}
+          onFocus={() => setShowClock(false)}
+          onBlur={() => setShowClock(true)}
+        >
+        </textarea>
       </div>
 
       <a class="button" href="#slideout" data-slideout-toggle>&gt;</a>
-      <div class="boxes">
-        <div class="box clock">
-          <Clock />
-        </div>
-        <div class="box timers">
-          <TimerComponent timers={timers} />
-        </div>
-      </div>
+      {showClock && <ClockPart timers={timers}/>}
     </>
   );
 }
-
-function Clock() {
+function ClockPart({ timers }: { timers: Timer[] }) {
+  const now = useTimer();
+  return      <div class="boxes">
+        <div class="box clock">
+          <Clock now={now} />
+        </div>
+        <div class="box timers">
+          <TimerComponent timers={timers} now={now} />
+        </div>
+      </div>
+}
+function useTimer() {
   const [now, setNow] = useState(Temporal.Now.plainTimeISO());
   useEffect(() => {
     const timer = setInterval(() => {
       setNow(Temporal.Now.plainTimeISO());
     }, 1000);
+    console.log('timer', timer);
     return () => {
       clearInterval(timer);
     };
   }, []);
+  return now;
+}
+function Clock({ now }: { now: Temporal.PlainTime }) {
   return (
-    <p id='now'>
-      {hourMin(now, true)}
+    <p id="now">
+      <svg version="1.2" viewBox="0 0 40 40" style="width: 100%" xmlns="http://www.w3.org/2000/svg" >
+        <text id="t1" y="20" >{hourMin(now, true)}</text>
+      </svg>
     </p>
   );
 }
-function TimerComponent({ timers }: { timers: Timer[] }) {
-  return (
-    <>
-      {timers.map(({ at, text }) => {
-        return <p>{hourMin(at)} {text}</p>;
-      })}
-    </>
-  );
+function TimerComponent(
+  { timers, now }: { timers: Timer[]; now: Temporal.PlainTime },
+) {
+  const ret: h.JSX.Element[] = [];
+  for (let i = 0; i < timers.length; i++) {
+    const { at, text } = timers[i];
+    const { at: next } = timers[i + 1] || {};
+    const showLine = next &&
+      Temporal.PlainTime.compare(at, now) < 0 &&
+      Temporal.PlainTime.compare(now, next) < 0;
+    ret.push(<p class={showLine ? "line" : ""}>{hourMin(at)} {text}</p>);
+  }
+  return <>{ret}</>;
 }
 
 export const config: PageConfig = { runtimeJS: true };

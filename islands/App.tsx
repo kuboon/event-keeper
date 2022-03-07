@@ -4,11 +4,10 @@ import {
   Fragment,
   h,
   Head,
-  PageConfig,
   Temporal,
   useEffect,
   useState,
-} from "../deps.ts";
+} from "../client_deps.ts";
 
 type Timer = {
   at: Temporal.PlainTime;
@@ -47,27 +46,13 @@ const startAt = Temporal.Now.plainTimeISO();
 const time2 = startAt.add({ minutes: 5 });
 const defaultText = `${hourMin(startAt)} 開始
 0:01 １分後
-0:01 １分後
-0:01 １分後
-0:01 １分後
-0:01 １分後
-0:01 １分後
-0:01 １分後
-0:01 １分後
-0:01 １分後
-0:01 １分後
-0:01 １分後
-0:01 １分後
-0:01 １分後
-0:01 １分後
-0:01 １分後
 0:02 その2分後
 
 ${hourMin(time2)} 空行のあとは時刻
 0:05 その5分後
 
 `;
-export default function Home() {
+export default function App() {
   const [text, setText] = useState(defaultText);
   const [timers, setTimers] = useState<Timer[]>(parse(text));
   const [showClock, setShowClock] = useState(true);
@@ -78,15 +63,6 @@ export default function Home() {
   };
   return (
     <>
-      <Head>
-        <title>Event Keeper</title>
-        <meta
-          name="viewport"
-          content="width=device-width,initial-scale=1,user-scalable=no"
-        >
-        </meta>
-        <link href="/style.css" rel="stylesheet" />
-      </Head>
       <div id="slideout" data-slideout-panel>
         <div data-slideout-header>
           <h3>setting</h3>
@@ -186,5 +162,3 @@ function TimerComponent(
     </>
   );
 }
-
-export const config: PageConfig = { runtimeJS: true };

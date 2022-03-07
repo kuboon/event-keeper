@@ -5,5 +5,10 @@
   "deno.suggest.imports.hosts": {
     "https://deno.land": true
   },
-  "deno.importMap": "import_map.json"
+  "deno.importMap": "import_map.json",
+  "editor.defaultFormatter": "denoland.vscode-deno",
+  "deno.path": "/home/vscode/.asdf/shims/deno",
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "denoland.vscode-deno"
+  }
 }

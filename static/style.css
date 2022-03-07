@@ -20,6 +20,8 @@
 body {
   font-family: var(--cssui-font-family);
   font-size: 3vmin;
+  margin: 0;
+  overflow: hidden;
 }
 
 /* ------------------------------
@@ -35,7 +37,7 @@ Changing the sliding in animation
   --slideout-shadow-color: #9ca3af;
   --slideout-padding: 1rem;
   --slideout-position: -100%;
-  --slideout-size: 33vw;
+  --slideout-size: min(30rem, 100%);
   position: fixed;
   top: 0;
   bottom: 0;
@@ -70,23 +72,22 @@ textarea {
   width: 100%;
 }
 
-.button {
+#slideout-button {
   display: block;
-  border: double gray;
-  border-width: 5px 5px 5px 0;
   padding: 0.1rem;
-  width: 3rem;
+  width: 7rem;
   text-decoration: none !important;
 }
 
 #now {
   font-size: 10px;
 }
-.line {
+#line {
   background-color: pink;
 }
 .boxes {
-  width: 100%;
+  width: 100vw;
+  height: calc(100vh - 2rem);
 }
 .boxes > * {
   flex: 1 0 40%;
@@ -97,10 +98,24 @@ textarea {
   margin: 1rem;
   padding: 1rem;
 }
+.box.timers {
+  overflow-y: scroll;
+}
 
 @media all and (orientation: landscape) {
   .boxes {
     display: flex;
     flex-wrap: wrap;
+  }
+  .boxes > * {
+    height: 100%;
+  }
+}
+@media all and (orientation: portrait) {
+  .box.clock {
+    height: 30vh;
+  }
+  .box.timers {
+    height: 60vh;
   }
 }

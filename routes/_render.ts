@@ -1,4 +1,4 @@
-import { RenderContext, RenderFn } from "../server_deps.ts";
+import type { RenderContext, RenderFn } from "$fresh/server.ts";
 
 export function render(ctx: RenderContext, render: RenderFn) {
   ctx.lang = "ja";

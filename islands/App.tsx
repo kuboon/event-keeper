@@ -1,13 +1,6 @@
-/** @jsx h */
-/** @jsxFrag Fragment */
-import {
-  Fragment,
-  h,
-  Head,
-  Temporal,
-  useEffect,
-  useState,
-} from "../client_deps.ts";
+import { Temporal } from "../client_deps.ts";
+import { h } from "preact";
+import { useEffect, useState } from "preact/hooks";
 
 type Timer = {
   at: Temporal.PlainTime;

@@ -1,6 +1,4 @@
-/** @jsx h */
-/** @jsxFrag Fragment */
-import { Fragment, h, Head } from "../client_deps.ts";
+import { Head } from "$fresh/runtime.ts";
 import App from "../islands/App.tsx";
 
 export default function Home() {

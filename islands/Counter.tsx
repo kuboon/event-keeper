@@ -1,5 +1,5 @@
-/** @jsx h */
-import { h, IS_BROWSER, useState } from "../client_deps.ts";
+import { useState } from "preact/hooks";
+import { IS_BROWSER } from "$fresh/runtime.ts";
 
 interface CounterProps {
   start: number;

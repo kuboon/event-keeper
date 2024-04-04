@@ -1,36 +1,35 @@
 {
-	"name": "Ubuntu asdf",
-	"runArgs": ["--init"],
-	"build": {
-		"dockerfile": "Dockerfile",
-		// Update 'VARIANT' to pick an Ubuntu version: hirsute, focal, bionic
-		// Use hirsute or bionic on local arm64/Apple Silicon.
-		"args": { "VARIANT": "hirsute" }
-	},
+  "name": "Ubuntu asdf",
+  "runArgs": ["--init"],
+  "build": {
+    "dockerfile": "Dockerfile",
+    // Update 'VARIANT' to pick an Ubuntu version: hirsute, focal, bionic
+    // Use hirsute or bionic on local arm64/Apple Silicon.
+    "args": { "VARIANT": "hirsute" }
+  },
 
-	// Set *default* container specific settings.json values on container create.
-	"settings": {
-		// Enables the project as a Deno project
-		"deno.enable": true,
-		// Enables Deno linting for the project
-		"deno.lint": true,
-		// Sets Deno as the default formatter for the project
-		"editor.defaultFormatter": "denoland.vscode-deno"
-	},
+  // Set *default* container specific settings.json values on container create.
+  "settings": {
+    // Enables the project as a Deno project
+    "deno.enable": true,
+    // Enables Deno linting for the project
+    "deno.lint": true,
+    // Sets Deno as the default formatter for the project
+    "editor.defaultFormatter": "denoland.vscode-deno"
+  },
 
+  // Add the IDs of extensions you want installed when the container is created.
+  "extensions": [
+    "denoland.vscode-deno"
+  ],
 
-	// Add the IDs of extensions you want installed when the container is created.
-	"extensions": [
-		"denoland.vscode-deno"
-	],
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  "forwardPorts": [8080],
 
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	"forwardPorts": [8080],
-
-	// Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
-	"remoteUser": "vscode",
-	"features": {
-		"git": "latest",
-		"github-cli": "latest"
-	}
+  // Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
+  "remoteUser": "vscode",
+  "features": {
+    "git": "latest",
+    "github-cli": "latest"
+  }
 }
